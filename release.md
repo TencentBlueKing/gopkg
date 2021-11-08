@@ -1,6 +1,10 @@
 版本日志
 ================
 
+## v1.0.2
+
+- add pkg: collection/set
+
 ## v1.0.1
 
 - add pkg: errorx
