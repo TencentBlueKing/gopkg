@@ -11,6 +11,8 @@ gopkg 是蓝鲸go公共库
 
 ## 目录
 
+- [errorx](./errorx/)
+
 
 ## Getting started
 
