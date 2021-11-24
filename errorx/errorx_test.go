@@ -42,7 +42,6 @@ var _ = Describe("Errorx", func() {
 
 		It("Wrap nil", func() {
 			var err error
-			err = nil
 			assert.Nil(GinkgoT(), Wrap(err, "Test", "Wrap", "wrapped-message"))
 		})
 
@@ -64,7 +63,6 @@ var _ = Describe("Errorx", func() {
 
 		It("Wrapf nil", func() {
 			var err error
-			err = nil
 			assert.Nil(GinkgoT(), Wrapf(err, "Test", "Wrap", "wrapped-message %d", 100))
 		})
 
