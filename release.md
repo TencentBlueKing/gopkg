@@ -1,5 +1,16 @@
 版本日志
 ================
+## v1.0.3
+
+- add pkg: stringx
+
+## v1.0.2
+
+- add pkg: collection/set
+
+## v1.0.1
+
+- add pkg: errorx
 
 ## v1.0.0
 

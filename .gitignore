@@ -19,4 +19,6 @@
 /vendor/
 /Godeps/
 .idea
+.envrc
+.coverage.cov
 
