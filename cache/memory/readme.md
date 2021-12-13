@@ -1,6 +1,6 @@
 # cache
 
-go cache the data in memory, auto to fetch the data if missing.
+cache the data in memory, auto to fetch the data if missing.
 
 - based on via [patrickmn/go-cache](https://github.com/patrickmn/go-cache)
 - retrieveFunc will be called if the key not in cache

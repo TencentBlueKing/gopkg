@@ -15,6 +15,8 @@ gopkg 是蓝鲸go公共库
 - [stringx](./stringx/)
 - collection
     - [set](./collection/set/)
+- cache
+    - [memory](./cache/memory/) 
 
 
 ## Getting started
