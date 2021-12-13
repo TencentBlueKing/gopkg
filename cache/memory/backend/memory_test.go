@@ -19,7 +19,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func newRandomDuration(seconds int) RandomExpirationDurationFunc {
+func newRandomDuration(seconds int) RandomExtraExpirationDurationFunc {
 	return func() time.Duration {
 		return time.Duration(rand.Intn(seconds*1000)) * time.Millisecond
 	}

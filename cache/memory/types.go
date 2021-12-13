@@ -15,18 +15,34 @@ import (
 	"time"
 )
 
+// Key is the type for the key of a cache entry.
+// a struct-like object implements the key interface, so it can be used as a key in a cache.
 type Key interface {
 	Key() string
 }
 
+// RetrieveFunc is the type of the retrieve function.
+// it retrieves the value from database, redis, apis, etc.
 type RetrieveFunc func(key Key) (interface{}, error)
 
+// Cache is the interface for the cache.
 type Cache interface {
 	Get(key Key) (interface{}, error)
 
 	GetString(key Key) (string, error)
 	GetBool(key Key) (bool, error)
+	GetInt(key Key) (int, error)
+	GetInt8(key Key) (int8, error)
+	GetInt16(key Key) (int16, error)
+	GetInt32(key Key) (int32, error)
 	GetInt64(key Key) (int64, error)
+	GetUint(key Key) (uint, error)
+	GetUint8(key Key) (uint8, error)
+	GetUint16(key Key) (uint16, error)
+	GetUint32(key Key) (uint32, error)
+	GetUint64(key Key) (uint64, error)
+	GetFloat32(key Key) (float32, error)
+	GetFloat64(key Key) (float64, error)
 	GetTime(key Key) (time.Time, error)
 
 	Delete(key Key) error

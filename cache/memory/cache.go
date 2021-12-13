@@ -17,14 +17,20 @@ import (
 	"github.com/TencentBlueKing/gopkg/cache/memory/backend"
 )
 
+// NewCache creates a new cache object.
+// - name: the cache name.
+// - disabled: whether the cache is disabled.
+// - retrieveFunc: the function to retrieve the real data.
+// - expiration: the expiration time.
+// - randomExtraExpirationFunc: the function to generate a random duration, used to add extra expiration for each key.
 func NewCache(
 	name string,
 	disabled bool,
 	retrieveFunc RetrieveFunc,
 	expiration time.Duration,
-	randomDurationFunc backend.RandomExpirationDurationFunc,
+	randomExtraExpirationFunc backend.RandomExtraExpirationDurationFunc,
 ) Cache {
-	be := backend.NewMemoryBackend(name, expiration, randomDurationFunc)
+	be := backend.NewMemoryBackend(name, expiration, randomExtraExpirationFunc)
 	return NewBaseCache(disabled, retrieveFunc, be)
 }
 
