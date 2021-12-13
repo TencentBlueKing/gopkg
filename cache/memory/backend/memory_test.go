@@ -56,7 +56,7 @@ var _ = Describe("Memory", func() {
 			assert.True(GinkgoT(), found)
 			assert.Equal(GinkgoT(), "world", value)
 
-			be.Delete("hello")
+			_ = be.Delete("hello")
 			_, found = be.Get("hello")
 			assert.False(GinkgoT(), found)
 		})

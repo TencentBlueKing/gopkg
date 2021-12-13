@@ -109,7 +109,7 @@ var _ = Describe("BaseCache", func() {
 		// missing before first Get->Retrieve
 		assert.False(GinkgoT(), c.Exists(aKey))
 
-		c.Get(aKey)
+		_, _ = c.Get(aKey)
 		assert.True(GinkgoT(), c.Exists(aKey))
 	})
 
@@ -118,17 +118,17 @@ var _ = Describe("BaseCache", func() {
 		_, ok := c.DirectGet(aKey)
 		assert.False(GinkgoT(), ok)
 
-		c.Get(aKey)
+		_, _ = c.Get(aKey)
 		_, ok = c.DirectGet(aKey)
 		assert.True(GinkgoT(), ok)
 	})
 
 	It("Delete", func() {
 		aKey := NewStringKey("a")
-		c.Get(aKey)
+		_, _ = c.Get(aKey)
 		assert.True(GinkgoT(), c.Exists(aKey))
 
-		c.Delete(aKey)
+		_ = c.Delete(aKey)
 		assert.False(GinkgoT(), c.Exists(aKey))
 	})
 
