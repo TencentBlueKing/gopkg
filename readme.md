@@ -11,10 +11,13 @@ gopkg 是蓝鲸go公共库
 
 ## 目录
 
+- [conv](./conv/)
 - [errorx](./errorx/)
 - [stringx](./stringx/)
 - collection
     - [set](./collection/set/)
+- cache
+    - [memory](./cache/memory/) 
 
 
 ## Getting started
