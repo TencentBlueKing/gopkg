@@ -13,43 +13,39 @@ package memory
 
 import (
 	"time"
-)
 
-// Key is the type for the key of a cache entry.
-// a struct-like object implements the key interface, so it can be used as a key in a cache.
-type Key interface {
-	Key() string
-}
+	"github.com/TencentBlueKing/gopkg/cache"
+)
 
 // RetrieveFunc is the type of the retrieve function.
 // it retrieves the value from database, redis, apis, etc.
-type RetrieveFunc func(key Key) (interface{}, error)
+type RetrieveFunc func(key cache.Key) (interface{}, error)
 
 // Cache is the interface for the cache.
 type Cache interface {
-	Get(key Key) (interface{}, error)
-	Set(key Key, data interface{})
+	Get(key cache.Key) (interface{}, error)
+	Set(key cache.Key, data interface{})
 
-	GetString(key Key) (string, error)
-	GetBool(key Key) (bool, error)
-	GetInt(key Key) (int, error)
-	GetInt8(key Key) (int8, error)
-	GetInt16(key Key) (int16, error)
-	GetInt32(key Key) (int32, error)
-	GetInt64(key Key) (int64, error)
-	GetUint(key Key) (uint, error)
-	GetUint8(key Key) (uint8, error)
-	GetUint16(key Key) (uint16, error)
-	GetUint32(key Key) (uint32, error)
-	GetUint64(key Key) (uint64, error)
-	GetFloat32(key Key) (float32, error)
-	GetFloat64(key Key) (float64, error)
-	GetTime(key Key) (time.Time, error)
+	GetString(key cache.Key) (string, error)
+	GetBool(key cache.Key) (bool, error)
+	GetInt(key cache.Key) (int, error)
+	GetInt8(key cache.Key) (int8, error)
+	GetInt16(key cache.Key) (int16, error)
+	GetInt32(key cache.Key) (int32, error)
+	GetInt64(key cache.Key) (int64, error)
+	GetUint(key cache.Key) (uint, error)
+	GetUint8(key cache.Key) (uint8, error)
+	GetUint16(key cache.Key) (uint16, error)
+	GetUint32(key cache.Key) (uint32, error)
+	GetUint64(key cache.Key) (uint64, error)
+	GetFloat32(key cache.Key) (float32, error)
+	GetFloat64(key cache.Key) (float64, error)
+	GetTime(key cache.Key) (time.Time, error)
 
-	Delete(key Key) error
-	Exists(key Key) bool
+	Delete(key cache.Key) error
+	Exists(key cache.Key) bool
 
-	DirectGet(key Key) (interface{}, bool)
+	DirectGet(key cache.Key) (interface{}, bool)
 
 	Disabled() bool
 }

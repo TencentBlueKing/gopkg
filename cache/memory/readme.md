@@ -21,11 +21,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/TencentBlueKing/gopkg/cache"
 	"github.com/TencentBlueKing/gopkg/cache/memory"
 )
 
 // 1. impl the reterive func
-func RetrieveOK(k memory.Key) (interface{}, error) {
+func RetrieveOK(k cache.Key) (interface{}, error) {
 	arg := k.(memory.StringKey)
 	fmt.Println("arg: ", arg)
 	// you can use the arg to fetch data from database or http request
@@ -64,6 +65,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/TencentBlueKing/gopkg/cache"
 	"github.com/TencentBlueKing/gopkg/cache/memory"
 )
 
@@ -78,7 +80,7 @@ func (k ExampleKey) Key() string {
 }
 
 // 2. impl the reterive func
-func RetrieveExample(inKey memory.Key) (interface{}, error) {
+func RetrieveExample(inKey cache.Key) (interface{}, error) {
 	k := inKey.(ExampleKey)
 	fmt.Println("ExampleKey Field1 and Field2 value:", k.Field1, k.Field2)
 	// data, err := GetFromDatabase(k.Field1, k.Field2)
