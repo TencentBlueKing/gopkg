@@ -17,6 +17,7 @@ import (
 
 	"golang.org/x/sync/singleflight"
 
+	"github.com/TencentBlueKing/gopkg/cache"
 	"github.com/TencentBlueKing/gopkg/cache/memory/backend"
 )
 
@@ -46,14 +47,14 @@ type EmptyCache struct {
 }
 
 // Exists returns true if the cache has a value for the given key.
-func (c *BaseCache) Exists(key Key) bool {
+func (c *BaseCache) Exists(key cache.Key) bool {
 	k := key.Key()
 	_, ok := c.backend.Get(k)
 	return ok
 }
 
 // Get will get the key from cache, if missing, will call the retrieveFunc to get the data, add to cache, then return
-func (c *BaseCache) Get(key Key) (interface{}, error) {
+func (c *BaseCache) Get(key cache.Key) (interface{}, error) {
 	// 1. if cache is disabled, fetch and return
 	if c.disabled {
 		value, err := c.retrieveFunc(key)
@@ -80,7 +81,7 @@ func (c *BaseCache) Get(key Key) (interface{}, error) {
 }
 
 // doRetrieve will retrieve the real data from database, redis, apis, etc.
-func (c *BaseCache) doRetrieve(k Key) (interface{}, error) {
+func (c *BaseCache) doRetrieve(k cache.Key) (interface{}, error) {
 	key := k.Key()
 
 	// 3.2 fetch
@@ -101,19 +102,19 @@ func (c *BaseCache) doRetrieve(k Key) (interface{}, error) {
 }
 
 // Set will set key-value into cache.
-func (c *BaseCache) Set(key Key, data interface{}) {
+func (c *BaseCache) Set(key cache.Key, data interface{}) {
 	k := key.Key()
 	c.backend.Set(k, data, 0)
 }
 
 // Delete deletes the value from the cache for the given key.
-func (c *BaseCache) Delete(key Key) error {
+func (c *BaseCache) Delete(key cache.Key) error {
 	k := key.Key()
 	return c.backend.Delete(k)
 }
 
 // DirectGet will get key from cache, without calling the retrieveFunc
-func (c *BaseCache) DirectGet(key Key) (interface{}, bool) {
+func (c *BaseCache) DirectGet(key cache.Key) (interface{}, bool) {
 	k := key.Key()
 	return c.backend.Get(k)
 }
@@ -127,7 +128,7 @@ func (c *BaseCache) Disabled() bool {
 
 // GetString returns a string representation of the value for the given key.
 // will error if the type is not a string.
-func (c *BaseCache) GetString(k Key) (string, error) {
+func (c *BaseCache) GetString(k cache.Key) (string, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return "", err
@@ -142,7 +143,7 @@ func (c *BaseCache) GetString(k Key) (string, error) {
 
 // GetBool returns a bool representation of the value for the given key.
 // will error if the type is not a bool.
-func (c *BaseCache) GetBool(k Key) (bool, error) {
+func (c *BaseCache) GetBool(k cache.Key) (bool, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return false, err
@@ -159,7 +160,7 @@ var defaultZeroTime = time.Time{}
 
 // GetTime returns a time representation of the value for the given key.
 // will error if the type is not an time.Time.
-func (c *BaseCache) GetTime(k Key) (time.Time, error) {
+func (c *BaseCache) GetTime(k cache.Key) (time.Time, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return defaultZeroTime, err
@@ -174,7 +175,7 @@ func (c *BaseCache) GetTime(k Key) (time.Time, error) {
 
 // GetInt returns an int representation of the value for the given key.
 // will error if the type is not an int.
-func (c *BaseCache) GetInt(k Key) (int, error) {
+func (c *BaseCache) GetInt(k cache.Key) (int, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -189,7 +190,7 @@ func (c *BaseCache) GetInt(k Key) (int, error) {
 
 // GetInt8 returns an int8 representation of the value for the given key.
 // will error if the type is not an int8.
-func (c *BaseCache) GetInt8(k Key) (int8, error) {
+func (c *BaseCache) GetInt8(k cache.Key) (int8, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -204,7 +205,7 @@ func (c *BaseCache) GetInt8(k Key) (int8, error) {
 
 // GetInt16 returns an int16 representation of the value for the given key.
 // will error if the type is not an int16.
-func (c *BaseCache) GetInt16(k Key) (int16, error) {
+func (c *BaseCache) GetInt16(k cache.Key) (int16, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -219,7 +220,7 @@ func (c *BaseCache) GetInt16(k Key) (int16, error) {
 
 // GetInt32 returns an int32 representation of the value for the given key.
 // will error if the type is not an int32.
-func (c *BaseCache) GetInt32(k Key) (int32, error) {
+func (c *BaseCache) GetInt32(k cache.Key) (int32, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -234,7 +235,7 @@ func (c *BaseCache) GetInt32(k Key) (int32, error) {
 
 // GetInt64 returns an int64 representation of the value for the given key.
 // will error if the type is not an int64.
-func (c *BaseCache) GetInt64(k Key) (int64, error) {
+func (c *BaseCache) GetInt64(k cache.Key) (int64, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -249,7 +250,7 @@ func (c *BaseCache) GetInt64(k Key) (int64, error) {
 
 // GetUint returns an uint representation of the value for the given key.
 // will error if the type is not an uint.
-func (c *BaseCache) GetUint(k Key) (uint, error) {
+func (c *BaseCache) GetUint(k cache.Key) (uint, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -264,7 +265,7 @@ func (c *BaseCache) GetUint(k Key) (uint, error) {
 
 // GetUint8 returns an uint8 representation of the value for the given key.
 // will error if the type is not an uint8.
-func (c *BaseCache) GetUint8(k Key) (uint8, error) {
+func (c *BaseCache) GetUint8(k cache.Key) (uint8, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -279,7 +280,7 @@ func (c *BaseCache) GetUint8(k Key) (uint8, error) {
 
 // GetUint16 returns an uint16 representation of the value for the given key.
 // will error if the type is not an uint16.
-func (c *BaseCache) GetUint16(k Key) (uint16, error) {
+func (c *BaseCache) GetUint16(k cache.Key) (uint16, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -294,7 +295,7 @@ func (c *BaseCache) GetUint16(k Key) (uint16, error) {
 
 // GetUint32 returns an uint32 representation of the value for the given key.
 // will error if the type is not an uint32.
-func (c *BaseCache) GetUint32(k Key) (uint32, error) {
+func (c *BaseCache) GetUint32(k cache.Key) (uint32, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -309,7 +310,7 @@ func (c *BaseCache) GetUint32(k Key) (uint32, error) {
 
 // GetUint64 returns an uint64 representation of the value for the given key.
 // will error if the type is not an uint64.
-func (c *BaseCache) GetUint64(k Key) (uint64, error) {
+func (c *BaseCache) GetUint64(k cache.Key) (uint64, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -324,7 +325,7 @@ func (c *BaseCache) GetUint64(k Key) (uint64, error) {
 
 // GetFloat32 returns a float32 representation of the value for the given key.
 // will error if the type is not a float32.
-func (c *BaseCache) GetFloat32(k Key) (float32, error) {
+func (c *BaseCache) GetFloat32(k cache.Key) (float32, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err
@@ -339,7 +340,7 @@ func (c *BaseCache) GetFloat32(k Key) (float32, error) {
 
 // GetFloat64 returns a float64 representation of the value for the given key.
 // will error if the type is not a float64.
-func (c *BaseCache) GetFloat64(k Key) (float64, error) {
+func (c *BaseCache) GetFloat64(k cache.Key) (float64, error) {
 	value, err := c.Get(k)
 	if err != nil {
 		return 0, err

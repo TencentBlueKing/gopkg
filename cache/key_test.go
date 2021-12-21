@@ -9,7 +9,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package memory
+package cache
 
 import (
 	. "github.com/onsi/ginkgo"
