@@ -28,6 +28,7 @@ type RetrieveFunc func(key Key) (interface{}, error)
 // Cache is the interface for the cache.
 type Cache interface {
 	Get(key Key) (interface{}, error)
+	Set(key Key, data interface{})
 
 	GetString(key Key) (string, error)
 	GetBool(key Key) (bool, error)
