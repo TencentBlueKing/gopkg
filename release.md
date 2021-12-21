@@ -1,5 +1,9 @@
 版本日志
 ================
+## v1.0.5
+
+- bugfix: cache/memory package name wrong
+
 ## v1.0.4
 
 - add pkg: cache/memory
