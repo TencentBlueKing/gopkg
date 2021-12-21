@@ -100,6 +100,12 @@ func (c *BaseCache) doRetrieve(k Key) (interface{}, error) {
 	return value, nil
 }
 
+// Set will set key-value into cache.
+func (c *BaseCache) Set(key Key, data interface{}) {
+	k := key.Key()
+	c.backend.Set(k, data, 0)
+}
+
 // Delete deletes the value from the cache for the given key.
 func (c *BaseCache) Delete(key Key) error {
 	k := key.Key()

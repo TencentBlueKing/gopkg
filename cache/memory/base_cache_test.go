@@ -15,9 +15,10 @@ import (
 	"errors"
 	"time"
 
-	"github.com/TencentBlueKing/gopkg/cache/memory/backend"
 	. "github.com/onsi/ginkgo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/TencentBlueKing/gopkg/cache/memory/backend"
 )
 
 func retrieveTest(k Key) (interface{}, error) {
@@ -89,6 +90,14 @@ var _ = Describe("BaseCache", func() {
 		x, err = c.Get(aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x.(string))
+	})
+
+	It("Set", func() {
+		setKey := NewStringKey("s")
+		c.Set(setKey, "1")
+		x, err := c.GetString(setKey)
+		assert.NoError(GinkgoT(), err)
+		assert.Equal(GinkgoT(), "1", x)
 	})
 
 	It("Disabled then get", func() {

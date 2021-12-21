@@ -1,5 +1,9 @@
 版本日志
 ================
+## v1.0.6
+
+- add: cache/memory add interface `Set(key Key, data interface{})`
+
 ## v1.0.5
 
 - bugfix: cache/memory package name wrong
