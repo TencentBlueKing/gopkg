@@ -9,9 +9,15 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package memory
+package cache
 
 import "fmt"
+
+// Key is the type for the key of a cache entry.
+// a struct-like object implements the key interface, so it can be used as a key in a cache.
+type Key interface {
+	Key() string
+}
 
 // StringKey is a string key.
 type StringKey struct {

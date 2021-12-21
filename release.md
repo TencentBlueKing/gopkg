@@ -1,5 +1,9 @@
 版本日志
 ================
+## v1.0.7
+
+- refactor: move cache/memory/key.go to cache/key.go, as a common type of cache module
+
 ## v1.0.6
 
 - add: cache/memory add interface `Set(key Key, data interface{})`

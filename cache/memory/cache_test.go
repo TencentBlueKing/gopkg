@@ -16,9 +16,11 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/TencentBlueKing/gopkg/cache"
 )
 
-func retrieveOK(k Key) (interface{}, error) {
+func retrieveOK(k cache.Key) (interface{}, error) {
 	return "ok", nil
 }
 
