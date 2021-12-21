@@ -9,7 +9,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package cache_test
+package memory_test
 
 import (
 	"testing"

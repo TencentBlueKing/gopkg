@@ -46,7 +46,7 @@ func main() {
 		nil)
 
 	// 4. use it
-	k := cache.NewStringKey("hello")
+	k := memory.NewStringKey("hello")
 
 	data, err := c.Get(k)
 	fmt.Println("err == nil: ", err == nil)
@@ -90,7 +90,7 @@ func RetrieveExample(inKey memory.Key) (interface{}, error) {
 
 func main() {
 	// 3. new a cache
-	c := cache.NewCache(
+	c := memory.NewCache(
 		"example",
 		false,
 		RetrieveExample,
