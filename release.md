@@ -1,5 +1,10 @@
 版本日志
 ================
+## v1.0.4
+
+- add pkg: cache/memory
+- add pkg: conv
+
 ## v1.0.3
 
 - add pkg: stringx
