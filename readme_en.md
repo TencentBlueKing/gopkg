@@ -27,6 +27,8 @@ use `go get`
 $ go get github.com/TencentBlueKing/gopkg/{pkg_name}
 ```
 
+See [Go Doc](https://pkg.go.dev/github.com/TencentBlueKing/gopkg) or [Go Walker](https://gowalker.org/github.com/TencentBlueKing/gopkg) for usage and details.
+
 ## Roadmap
 
 - [release log](release.md)
