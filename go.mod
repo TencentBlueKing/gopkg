@@ -8,4 +8,5 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	logur.dev/logur v0.17.0 // indirect
 )
