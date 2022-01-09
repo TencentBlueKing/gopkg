@@ -13,6 +13,17 @@ loggerA := logging.GetLogger("github.com/TencentBlueKing/gopkg:a")
 loggerB := logging.GetLogger("github.com/TencentBlueKing/gopkg:b")
 ```
 
+获取日志对象后，使用以下方式打印日志：
+```go
+// 文本日志
+logger.Info("hello world")
+
+// 结构化日志
+logger.Info("hello world", map[string]interface{}{
+    "name": "value",
+})
+```
+
 ## 设置日志实现
 可以使用 log/zap/logrus 来作为日志实现，默认不选择任何实现，按需开启。你也可以实现 `logging.Logger` 接口，自定义日志实现，如：
 ```go
