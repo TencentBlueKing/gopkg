@@ -21,20 +21,20 @@ import (
 
 var _ = Describe("Define", func() {
 	var (
-		globalLoggers, globalLoggerAlias sync.Map
+		globalLoggers, globalLoggerAlias *sync.Map
 		mockLogger                       logur.NoopLogger
 	)
 
 	BeforeEach(func() {
 		globalLoggers = loggers
-		loggers = sync.Map{}
+		loggers = &sync.Map{}
 		globalLoggers.Range(func(key, value interface{}) bool {
 			loggers.Store(key, value)
 			return true
 		})
 
 		globalLoggerAlias = loggerAlias
-		loggerAlias = sync.Map{}
+		loggerAlias = &sync.Map{}
 		globalLoggerAlias.Range(func(key, value interface{}) bool {
 			loggerAlias.Store(key, value)
 			return true

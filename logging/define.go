@@ -23,7 +23,7 @@ type Logger = logur.LoggerFacade
 // DefaultLoggerName is the name of the default logger.
 const DefaultLoggerName = ""
 
-var loggerAlias, loggers sync.Map
+var loggerAlias, loggers *sync.Map
 
 func tryGetLogger(name string) (Logger, bool) {
 	v, ok := loggers.Load(name)
@@ -75,6 +75,9 @@ func SetAlias(name string, aliases ...string) {
 }
 
 func init() {
+	loggerAlias = &sync.Map{}
+	loggers = &sync.Map{}
+
 	// make sure the default logger is created
 	SetLogger(DefaultLoggerName, logur.NoopLogger{})
 }
