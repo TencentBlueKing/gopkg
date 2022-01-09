@@ -62,4 +62,12 @@ var _ = Describe("Define", func() {
 	It("Get a non-existing logger", func() {
 		assert.Equal(GinkgoT(), GetLogger(DefaultLoggerName), GetLogger("non-existing"))
 	})
+
+	It("Define aliases", func() {
+		SetLogger("test", mockLogger)
+		SetAlias("test", "aliasA", "aliasB")
+
+		assert.Equal(GinkgoT(), GetLogger("test"), GetLogger("aliasA"))
+		assert.Equal(GinkgoT(), GetLogger("test"), GetLogger("aliasB"))
+	})
 })

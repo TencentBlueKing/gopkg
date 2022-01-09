@@ -47,13 +47,13 @@ func GetLogger(name string) Logger {
 	}
 
 	// search for alias when name is not found
-	alias, ok := loggerAlias.Load(name)
+	realName, ok := loggerAlias.Load(name)
 	if !ok {
 		logger, _ = tryGetLogger(DefaultLoggerName)
 		return logger
 	}
 
-	logger, ok = tryGetLogger(alias.(string))
+	logger, ok = tryGetLogger(realName.(string))
 	if ok {
 		return logger
 	}
@@ -68,8 +68,10 @@ func SetLogger(name string, logger Logger) {
 }
 
 // SetAlias is used to define a logger alias.
-func SetAlias(name string, alias string) {
-	loggerAlias.Store(alias, name)
+func SetAlias(name string, aliases ...string) {
+	for _, alias := range aliases {
+		loggerAlias.Store(alias, name)
+	}
 }
 
 func init() {
