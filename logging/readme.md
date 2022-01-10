@@ -6,10 +6,17 @@
 类似 python logging 模块，需要使用名字获取对应的日志对象，请使用模块导入地址来设置和获取，如：
 ```go
 // 设置模块日志
+logging.SetLogger("github.com/TencentBlueKing/gopkg", myLogger)
+// 获取模块日志
 logger := logging.GetLogger("github.com/TencentBlueKing/gopkg")
 
 // 如果一个模块有多个日志对象，用冒号隔开
+// 日志对象 A
+logging.SetLogger("github.com/TencentBlueKing/gopkg:a", myLoggerA)
 loggerA := logging.GetLogger("github.com/TencentBlueKing/gopkg:a")
+
+// 日志对象 B
+logging.SetLogger("github.com/TencentBlueKing/gopkg:b", myLoggerB)
 loggerB := logging.GetLogger("github.com/TencentBlueKing/gopkg:b")
 ```
 
@@ -18,7 +25,7 @@ loggerB := logging.GetLogger("github.com/TencentBlueKing/gopkg:b")
 // 文本日志
 logger.Info("hello world")
 
-// 结构化日志
+// 结构化日志，仅第一个字典参数生效
 logger.Info("hello world", map[string]interface{}{
     "name": "value",
 })
@@ -49,5 +56,5 @@ logging.SetLogger(
 如果你想使用默认的日志实现，请使用以下方法：
 ```go
 // 设置默认日志实现，当未匹配到名称和别名时，会尝试使用默认实现
-SetLogger(DefaultLoggerName, myLogger)
+logging.SetLogger(logging.DefaultLoggerName, myLogger)
 ```
