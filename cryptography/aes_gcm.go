@@ -14,7 +14,6 @@ package cryptography
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"encoding/base64"
 	"errors"
 
 	"github.com/TencentBlueKing/gopkg/conv"
@@ -45,6 +44,7 @@ type AESGcm struct {
 	aead cipher.AEAD
 }
 
+// NewAESGcm returns a new AES-GCM instance
 func NewAESGcm(key []byte, nonce []byte) (aesGcm *AESGcm, err error) {
 	// check key and nonce length
 	if len(key) != ValidAES128KeySize && len(key) != ValidAES256KeySize {
@@ -73,33 +73,26 @@ func NewAESGcm(key []byte, nonce []byte) (aesGcm *AESGcm, err error) {
 	}, nil
 }
 
+// Encrypt encrypts plaintext
 func (a *AESGcm) Encrypt(plaintext []byte) []byte {
 	encryptedText := a.aead.Seal(plaintext[:0], a.nonce, plaintext, nil)
 	return encryptedText
 }
 
+// Decrypt decrypts ciphertext
 func (a *AESGcm) Decrypt(encryptedText []byte) ([]byte, error) {
 	plaintext, err := a.aead.Open(nil, a.nonce, encryptedText, nil)
 	return plaintext, err
 }
 
-func (a *AESGcm) EncryptToBase64(plaintext []byte) string {
-	encryptedText := a.Encrypt(plaintext)
-	return base64.StdEncoding.EncodeToString(encryptedText)
+// EncryptToString encrypts plaintext to string
+func (a *AESGcm) EncryptToString(plaintext []byte) string {
+	encryptedText := a.aead.Seal(plaintext[:0], a.nonce, plaintext, nil)
+	return conv.BytesToString(encryptedText)
 }
 
-func (a *AESGcm) DecryptFromBase64(encryptedTextB64 []byte) (plaintext string, err error) {
-	var encryptedText []byte
-	encryptedText, err = base64.StdEncoding.DecodeString(conv.BytesToString(encryptedTextB64))
-	if err != nil {
-		return
-	}
-
-	var plaintextBytes []byte
-	plaintextBytes, err = a.Decrypt(encryptedText)
-	if err != nil {
-		return
-	}
-
-	return conv.BytesToString(plaintextBytes), err
+// DecryptString decrypts ciphertext string
+func (a *AESGcm) DecryptString(encryptedText string) ([]byte, error) {
+	plaintext, err := a.aead.Open(nil, a.nonce, conv.StringToBytes(encryptedText), nil)
+	return plaintext, err
 }

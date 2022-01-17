@@ -1,7 +1,6 @@
 package cryptography
 
 import (
-	"encoding/base64"
 	"strconv"
 	"testing"
 	"time"
@@ -41,12 +40,12 @@ var _ = Describe("Cryptography", func() {
 		var aesGcm *AESGcm
 		var plaintext []byte
 		var encryptedText []byte
-		var encryptedTextBase64 string
+		// var encryptedTextBase64 string
 		BeforeEach(func() {
 			aesGcm, _ = NewAESGcm([]byte(AESTestKey), []byte(Nonce))
 			plaintext = []byte("exampleplaintext")
 			encryptedText = []byte{148, 205, 172, 75, 6, 179, 220, 244, 255, 30, 115, 122, 55, 205, 243, 240, 125, 149, 164, 203, 228, 253, 252, 76, 222, 14, 124, 180, 56, 36, 142, 80}
-			encryptedTextBase64 = base64.StdEncoding.EncodeToString(encryptedText)
+			// encryptedTextBase64 = base64.StdEncoding.EncodeToString(encryptedText)
 		})
 
 		Describe("Encrypt", func() {
@@ -64,21 +63,36 @@ var _ = Describe("Cryptography", func() {
 			})
 		})
 
-		Describe("EncryptToBase64", func() {
+		Describe("EncryptToString", func() {
 			It("ok", func() {
-				et := aesGcm.EncryptToBase64(plaintext)
-				assert.Equal(GinkgoT(), encryptedTextBase64, et)
+				et := aesGcm.EncryptToString(plaintext)
+				assert.Equal(GinkgoT(), string(encryptedText), et)
 			})
 		})
 
-		Describe("DecryptFromBase64", func() {
+		Describe("DecryptString", func() {
 			It("ok", func() {
-				dt, err := aesGcm.DecryptFromBase64([]byte(encryptedTextBase64))
+				dt, err := aesGcm.DecryptString(string(encryptedText))
 				assert.NoError(GinkgoT(), err)
-				assert.Equal(GinkgoT(), string(plaintext), dt)
+				assert.Equal(GinkgoT(), plaintext, dt)
 			})
-
 		})
+
+		// Describe("EncryptToBase64", func() {
+		// 	It("ok", func() {
+		// 		et := aesGcm.EncryptToBase64(plaintext)
+		// 		assert.Equal(GinkgoT(), encryptedTextBase64, et)
+		// 	})
+		// })
+		//
+		// Describe("DecryptFromBase64", func() {
+		// 	It("ok", func() {
+		// 		dt, err := aesGcm.DecryptFromBase64([]byte(encryptedTextBase64))
+		// 		assert.NoError(GinkgoT(), err)
+		// 		assert.Equal(GinkgoT(), string(plaintext), dt)
+		// 	})
+		//
+		// })
 	})
 
 })
@@ -112,26 +126,26 @@ func benchmarkAESGCMDecrypt(b *testing.B) {
 	}
 }
 
-func benchmarkAESGCMEncryptToBase64(b *testing.B) {
+func benchmarkAESGCMEncryptToString(b *testing.B) {
 	text := []byte("http://www.test.com?foo=bar&hello=world")
 	nonce := setup()
 	aesgcm, _ := NewAESGcm([]byte(AESTestKey), nonce)
 
 	// input := []byte(text)
 	for i := 0; i < b.N; i++ {
-		aesgcm.EncryptToBase64(text)
+		aesgcm.EncryptToString(text)
 	}
 }
 
-func benchmarkAESGCMDecryptFromBase64(b *testing.B) {
+func benchmarkAESGCMDecryptString(b *testing.B) {
 	text := []byte("http://www.test.com?foo=bar&hello=world")
 	nonce := setup()
 	aesgcm, _ := NewAESGcm([]byte(AESTestKey), nonce)
 
 	// input := []byte(text)
-	encryptedText := []byte(aesgcm.EncryptToBase64(text))
+	encryptedText := aesgcm.EncryptToString(text)
 	for i := 0; i < b.N; i++ {
-		_, _ = aesgcm.DecryptFromBase64(encryptedText)
+		_, _ = aesgcm.DecryptString(encryptedText)
 	}
 }
 
@@ -139,7 +153,7 @@ func BenchmarkAESGCMEncryptDecrypt(b *testing.B) {
 	b.Run("cipher", func(b *testing.B) {
 		b.Run("Encrypt", benchmarkAESGCMEncrypt)
 		b.Run("Decrypt", benchmarkAESGCMDecrypt)
-		b.Run("EncryptToBase64", benchmarkAESGCMEncryptToBase64)
-		b.Run("DecryptFromBase64", benchmarkAESGCMDecryptFromBase64)
+		b.Run("EncryptString", benchmarkAESGCMEncryptToString)
+		b.Run("DecryptString", benchmarkAESGCMDecryptString)
 	})
 }

@@ -15,6 +15,6 @@ type Crypto interface {
 	Encrypt(plaintext []byte) []byte
 	Decrypt(encryptedText []byte) ([]byte, error)
 
-	EncryptToBase64(plaintext []byte) string
-	DecryptFromBase64(encryptedTextB64 []byte) (string, error)
+	EncryptToString(plaintext []byte) (string, error)
+	DecryptString(encryptedText string) ([]byte, error)
 }
