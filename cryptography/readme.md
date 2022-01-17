@@ -24,6 +24,6 @@ cs := c.Encrypt(plain)
 ds, err := c.Decrypt(cs)
 
 // base64
-cs1 := c.EncryptToBase64(plain)
+cs1 := c.EncryptToBase64([]bytes(plain))
 ds1, err = c.DecryptFromBase64(cs1)
 ```
