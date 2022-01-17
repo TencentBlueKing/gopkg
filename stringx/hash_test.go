@@ -12,8 +12,7 @@
 package stringx_test
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
+	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/TencentBlueKing/gopkg/stringx"
@@ -29,6 +28,5 @@ var _ = Describe("Hash", func() {
 			Entry("value is 'test'", "098f6bcd4621d373cade4e832627b4f6", "test"),
 		)
 	})
-
 
 })

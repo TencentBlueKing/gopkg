@@ -12,7 +12,7 @@
 package set_test
 
 import (
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/TencentBlueKing/gopkg/collection/set"
@@ -97,7 +97,7 @@ var _ = Describe("String Set", func() {
 			s2 := s.ToString(",")
 
 			isEqual := s2 == "hello,world" || s2 == "world,hello"
-			//assert.Equal(GinkgoT(), "hello,world", s2)
+			// assert.Equal(GinkgoT(), "hello,world", s2)
 			assert.True(GinkgoT(), isEqual)
 
 		})

@@ -13,7 +13,7 @@ package errorx
 
 import (
 	"errors"
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -52,7 +52,7 @@ var _ = Describe("Types", func() {
 		It("the e.error is nil", func() {
 			e := Errorx{
 				message: "e",
-				err: nil,
+				err:     nil,
 			}
 			assert.False(GinkgoT(), errors.Is(e, errors.New("an error")))
 		})

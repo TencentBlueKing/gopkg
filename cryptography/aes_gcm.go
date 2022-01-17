@@ -33,6 +33,11 @@ const (
 	NonceByteSize int = 12
 )
 
+var (
+	ErrInvalidKey   = errors.New("invalid key, should be 16 or 32 bytes")
+	ErrInvalidNonce = errors.New("invalid nonce, should be 12 bytes")
+)
+
 type AESGcm struct {
 	key   []byte
 	nonce []byte
@@ -43,11 +48,11 @@ type AESGcm struct {
 func NewAESGcm(key []byte, nonce []byte) (aesGcm *AESGcm, err error) {
 	// check key and nonce length
 	if len(key) != ValidAES128KeySize && len(key) != ValidAES256KeySize {
-		return nil, errors.New("invalid key, should be 16 or 32 bytes")
+		return nil, ErrInvalidKey
 	}
 
 	if len(nonce) != NonceByteSize {
-		return nil, errors.New("invalid nonce, should be 12 bytes")
+		return nil, ErrInvalidNonce
 	}
 
 	// create AEAD
@@ -78,15 +83,14 @@ func (a *AESGcm) Decrypt(encryptedText []byte) ([]byte, error) {
 	return plaintext, err
 }
 
-func (a *AESGcm) EncryptToBase64(plaintext string) string {
-	plaintextBytes := conv.StringToBytes(plaintext)
-	encryptedText := a.Encrypt(plaintextBytes)
+func (a *AESGcm) EncryptToBase64(plaintext []byte) string {
+	encryptedText := a.Encrypt(plaintext)
 	return base64.StdEncoding.EncodeToString(encryptedText)
 }
 
-func (a *AESGcm) DecryptFromBase64(encryptedTextB64 string) (plaintext string, err error) {
+func (a *AESGcm) DecryptFromBase64(encryptedTextB64 []byte) (plaintext string, err error) {
 	var encryptedText []byte
-	encryptedText, err = base64.StdEncoding.DecodeString(encryptedTextB64)
+	encryptedText, err = base64.StdEncoding.DecodeString(conv.BytesToString(encryptedTextB64))
 	if err != nil {
 		return
 	}
