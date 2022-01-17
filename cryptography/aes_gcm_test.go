@@ -108,7 +108,7 @@ func benchmarkAESGCMDecrypt(b *testing.B) {
 	input := []byte(text)
 	encryptedText := aesgcm.Encrypt(input)
 	for i := 0; i < b.N; i++ {
-		aesgcm.Decrypt(encryptedText)
+		_, _ = aesgcm.Decrypt(encryptedText)
 	}
 }
 
@@ -131,7 +131,7 @@ func benchmarkAESGCMDecryptFromBase64(b *testing.B) {
 	// input := []byte(text)
 	encryptedText := []byte(aesgcm.EncryptToBase64(text))
 	for i := 0; i < b.N; i++ {
-		aesgcm.DecryptFromBase64(encryptedText)
+		_, _ = aesgcm.DecryptFromBase64(encryptedText)
 	}
 }
 
