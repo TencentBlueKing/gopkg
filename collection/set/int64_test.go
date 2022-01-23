@@ -12,7 +12,7 @@
 package set_test
 
 import (
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/TencentBlueKing/gopkg/collection/set"
@@ -26,7 +26,7 @@ var _ = Describe("Int64", func() {
 	})
 
 	It("NewInt64Set", func() {
-		//s := util.NewInt64Set()
+		// s := util.NewInt64Set()
 		assert.Len(GinkgoT(), s.Data, 0)
 		assert.Equal(GinkgoT(), 0, s.Size())
 	})

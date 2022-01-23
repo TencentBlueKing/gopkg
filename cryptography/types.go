@@ -9,16 +9,12 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package memory_test
+package cryptography
 
-import (
-	"testing"
+type Crypto interface {
+	Encrypt(plaintext []byte) []byte
+	Decrypt(encryptedText []byte) ([]byte, error)
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-)
-
-func TestMemory(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Memory Suite")
+	EncryptToString(plaintext []byte) (string, error)
+	DecryptString(encryptedText string) ([]byte, error)
 }
