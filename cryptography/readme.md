@@ -7,6 +7,8 @@
 ### aes_gcm
 
 ```go
+import "github.com/TencentBlueKing/gopkg/cryptography"
+
 const (
 	cryptoKey   = "C4QSNKR4GNPIZAH3B0RPWAIV29E7QZ66"
 	aesGcmNonce = "KC9DvYrNGnPW"
@@ -17,13 +19,13 @@ if err != nil {
     return nil, fmt.Errorf("cryptos key error: %w", err)
 }
 
-plain := "hello world"
+plain := []byte("hello world")
 
 // plain
 cs := c.Encrypt(plain)
 ds, err := c.Decrypt(cs)
 
 // base64
-cs1 := c.EncryptToBase64([]bytes(plain))
-ds1, err = c.DecryptFromBase64(cs1)
+cs1 := c.EncryptToString(plain)
+ds1, err := c.DecryptString(cs1)
 ```
