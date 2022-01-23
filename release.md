@@ -1,5 +1,10 @@
 版本日志
 ================
+## v1.0.8
+
+- add: logger interface
+- add: cryptography
+
 ## v1.0.7
 
 - refactor: move cache/memory/key.go to cache/key.go, as a common type of cache module

@@ -9,7 +9,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package errorx_test
+package log
 
 import (
 	"testing"
@@ -18,7 +18,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestErrorx(t *testing.T) {
+func TestLog(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Errorx Suite")
+	RunSpecs(t, "Log Suite")
 }

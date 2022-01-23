@@ -9,16 +9,26 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package errorx_test
+package zap
 
 import (
-	"testing"
+	"github.com/sirupsen/logrus"
+	adapter "logur.dev/adapter/logrus"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/TencentBlueKing/gopkg/logging"
 )
 
-func TestErrorx(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Errorx Suite")
+// SetLogger sets a logger to the logging package.
+func SetLogger(name string, logger *logrus.Logger) {
+	logging.SetLogger(name, adapter.New(logger))
+}
+
+// SetLoggerFromEntry sets a logger entry to the logging package.
+func SetLoggerFromEntry(name string, entry *logrus.Entry) {
+	logging.SetLogger(name, adapter.NewFromEntry(entry))
+}
+
+// EnsureDefaultLogger will replace the default logger by logrus.StandardLogger.
+func EnsureDefaultLogger() {
+	SetLogger(logging.DefaultLoggerName, logrus.StandardLogger())
 }

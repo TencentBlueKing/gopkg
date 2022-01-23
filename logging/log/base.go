@@ -9,16 +9,22 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package errorx_test
+package log
 
 import (
-	"testing"
+	"log"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"logur.dev/logur"
+
+	"github.com/TencentBlueKing/gopkg/logging"
 )
 
-func TestErrorx(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Errorx Suite")
+// SetLogger sets a logger to the logging package.
+func SetLogger(name string, logger *log.Logger, level logur.Level) {
+	logging.SetLogger(name, New(logger, level))
+}
+
+// EnsureDefaultLogger will replace the default logger by log default logger.
+func EnsureDefaultLogger(level logur.Level) {
+	SetLogger(logging.DefaultLoggerName, log.Default(), level)
 }

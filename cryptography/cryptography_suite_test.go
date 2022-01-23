@@ -1,4 +1,4 @@
-package cache_test
+package cryptography_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestCache(t *testing.T) {
+func TestCryptography(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Cache Suite")
+	RunSpecs(t, "Cryptography Suite")
 }

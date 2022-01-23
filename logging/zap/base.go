@@ -9,16 +9,16 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package errorx_test
+package zap
 
 import (
-	"testing"
+	"go.uber.org/zap"
+	adapter "logur.dev/adapter/zap"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/TencentBlueKing/gopkg/logging"
 )
 
-func TestErrorx(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Errorx Suite")
+// SetLogger sets a logger to the logging package.
+func SetLogger(name string, logger *zap.Logger) {
+	logging.SetLogger(name, adapter.New(logger))
 }

@@ -9,16 +9,12 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package errorx_test
+package cryptography
 
-import (
-	"testing"
+type Crypto interface {
+	Encrypt(plaintext []byte) []byte
+	Decrypt(encryptedText []byte) ([]byte, error)
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-)
-
-func TestErrorx(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Errorx Suite")
+	EncryptToString(plaintext []byte) (string, error)
+	DecryptString(encryptedText string) ([]byte, error)
 }
