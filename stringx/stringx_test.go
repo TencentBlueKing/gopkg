@@ -12,6 +12,8 @@
 package stringx_test
 
 import (
+	"strings"
+
 	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 
@@ -39,6 +41,45 @@ var _ = Describe("Stringx", func() {
 				Entry("string length 10", 10),
 			)
 		})
+	})
+
+	Describe("Random String", func() {
+		DescribeTable("Random String cases", func(sequence string, length int) {
+			s := stringx.RandomString(sequence, length)
+			assert.Equal(GinkgoT(), length, len(s))
+			for _, c := range s {
+				assert.True(GinkgoT(), strings.ContainsRune(sequence, c))
+			}
+		},
+			Entry("Lowercase string 0", stringx.Lowercase, 0),
+			Entry("Lowercase string 10", stringx.Lowercase, 10),
+
+			Entry("Uppercase string 0", stringx.Uppercase, 0),
+			Entry("Uppercase string 10", stringx.Uppercase, 10),
+
+			Entry("Letters string 0", stringx.Letters, 0),
+			Entry("Letters string 10", stringx.Letters, 10),
+
+			Entry("Digits string 0", stringx.Digits, 0),
+			Entry("Digits string 10", stringx.Digits, 10),
+
+			Entry("Alphanum string 0", stringx.Alphanum, 0),
+			Entry("Alphanum string 10", stringx.Alphanum, 10),
+		)
+	})
+
+	Describe("Random Alphanumeric String", func() {
+		DescribeTable("Random Alphanumeric String cases", func(length int) {
+			s := stringx.RandomAlphanumericString(length)
+			assert.Equal(GinkgoT(), length, len(s))
+			for _, c := range s {
+				assert.True(GinkgoT(), strings.ContainsRune(stringx.Alphanum, c))
+			}
+		},
+			Entry("string length 0", 0),
+			Entry("string length 1", 10),
+			Entry("string length 10", 10),
+		)
 	})
 
 })

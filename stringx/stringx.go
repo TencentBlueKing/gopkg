@@ -13,6 +13,14 @@ package stringx
 
 import "math/rand"
 
+const (
+	Lowercase = "abcdefghijklmnopqrstuvwxyz"
+	Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	Letters   = Lowercase + Uppercase
+	Digits    = "0123456789"
+	Alphanum  = Letters + Digits
+)
+
 // Truncate string to specific length
 func Truncate(s string, n int) string {
 	if n > len(s) {
@@ -20,7 +28,6 @@ func Truncate(s string, n int) string {
 	}
 	return s[:n]
 }
-
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyz1234567890"
 
@@ -31,4 +38,19 @@ func Random(n int) string {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
 	return string(b)
+}
+
+// RandomString generate a random string with string sequence and fixed length
+func RandomString(sequence string, n int) string {
+	seqLen := len(sequence)
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = sequence[rand.Intn(seqLen)]
+	}
+	return string(b)
+}
+
+// RandomAlphanumericString generate a random string with alphanumeric string and fixed length
+func RandomAlphanumericString(n int) string {
+	return RandomString(Alphanum, n)
 }
