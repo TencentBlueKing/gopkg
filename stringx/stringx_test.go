@@ -31,21 +31,11 @@ var _ = Describe("Stringx", func() {
 			Entry("truncated size equals to real size", s, 10),
 			Entry("truncated size greater than real size", s, 20),
 		)
-
-		Describe("Random", func() {
-			DescribeTable("Random String cases", func(length int) {
-				assert.Equal(GinkgoT(), length, len(stringx.Random(length)))
-			},
-				Entry("string length 0", 0),
-				Entry("string length 1", 10),
-				Entry("string length 10", 10),
-			)
-		})
 	})
 
 	Describe("Random String", func() {
-		DescribeTable("Random String cases", func(sequence string, length int) {
-			s := stringx.RandomString(sequence, length)
+		DescribeTable("Random Sample cases", func(sequence string, length int) {
+			s := stringx.RandomSample(sequence, length)
 			assert.Equal(GinkgoT(), length, len(s))
 			for _, c := range s {
 				assert.True(GinkgoT(), strings.ContainsRune(sequence, c))
@@ -70,7 +60,7 @@ var _ = Describe("Stringx", func() {
 
 	Describe("Random Alphanumeric String", func() {
 		DescribeTable("Random Alphanumeric String cases", func(length int) {
-			s := stringx.RandomAlphanumericString(length)
+			s := stringx.RandomAlphanum(length)
 			assert.Equal(GinkgoT(), length, len(s))
 			for _, c := range s {
 				assert.True(GinkgoT(), strings.ContainsRune(stringx.Alphanum, c))
@@ -81,5 +71,4 @@ var _ = Describe("Stringx", func() {
 			Entry("string length 10", 10),
 		)
 	})
-
 })

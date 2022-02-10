@@ -29,28 +29,17 @@ func Truncate(s string, n int) string {
 	return s[:n]
 }
 
-const letterBytes = "abcdefghijklmnopqrstuvwxyz1234567890"
-
-// Random generate a random string with fixed length. [a-z0-9]
-func Random(n int) string {
+// RandomSample generate a random string with string sequence and fixed length
+func RandomSample(sequence string, n int) string {
+	sequenceLen := len(sequence)
 	b := make([]byte, n)
 	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+		b[i] = sequence[rand.Intn(sequenceLen)]
 	}
 	return string(b)
 }
 
-// RandomString generate a random string with string sequence and fixed length
-func RandomString(sequence string, n int) string {
-	seqLen := len(sequence)
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = sequence[rand.Intn(seqLen)]
-	}
-	return string(b)
-}
-
-// RandomAlphanumericString generate a random string with alphanumeric string and fixed length
-func RandomAlphanumericString(n int) string {
-	return RandomString(Alphanum, n)
+// RandomAlphanum generate a random string with alphanumeric string and fixed length
+func RandomAlphanum(n int) string {
+	return RandomSample(Alphanum, n)
 }
