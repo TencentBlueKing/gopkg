@@ -21,11 +21,11 @@ if err != nil {
 
 plain := []byte("hello world")
 
-// plain
+// bytes
 cs := c.Encrypt(plain)
 ds, err := c.Decrypt(cs)
 
-// base64
+// string
 cs1 := c.EncryptToString(plain)
 ds1, err := c.DecryptString(cs1)
 ```
