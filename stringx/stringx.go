@@ -14,11 +14,11 @@ package stringx
 import "math/rand"
 
 const (
-	Lowercase = "abcdefghijklmnopqrstuvwxyz"
-	Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	Letters   = Lowercase + Uppercase
-	Digits    = "0123456789"
-	Alphanum  = Letters + Digits
+	LowercaseLetters = "abcdefghijklmnopqrstuvwxyz"
+	UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	Letters          = LowercaseLetters + UppercaseLetters
+	Digits           = "0123456789"
+	Alphanum         = Letters + Digits
 )
 
 // Truncate string to specific length

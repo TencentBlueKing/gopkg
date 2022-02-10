@@ -41,11 +41,11 @@ var _ = Describe("Stringx", func() {
 				assert.True(GinkgoT(), strings.ContainsRune(sequence, c))
 			}
 		},
-			Entry("Lowercase string 0", stringx.Lowercase, 0),
-			Entry("Lowercase string 10", stringx.Lowercase, 10),
+			Entry("LowercaseLetters string 0", stringx.LowercaseLetters, 0),
+			Entry("LowercaseLetters string 10", stringx.LowercaseLetters, 10),
 
-			Entry("Uppercase string 0", stringx.Uppercase, 0),
-			Entry("Uppercase string 10", stringx.Uppercase, 10),
+			Entry("UppercaseLetters string 0", stringx.UppercaseLetters, 0),
+			Entry("UppercaseLetters string 10", stringx.UppercaseLetters, 10),
 
 			Entry("Letters string 0", stringx.Letters, 0),
 			Entry("Letters string 10", stringx.Letters, 10),
