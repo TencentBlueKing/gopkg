@@ -12,6 +12,8 @@
 package stringx_test
 
 import (
+	"strings"
+
 	. "github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/assert"
 
@@ -29,16 +31,44 @@ var _ = Describe("Stringx", func() {
 			Entry("truncated size equals to real size", s, 10),
 			Entry("truncated size greater than real size", s, 20),
 		)
-
-		Describe("Random", func() {
-			DescribeTable("Random String cases", func(length int) {
-				assert.Equal(GinkgoT(), length, len(stringx.Random(length)))
-			},
-				Entry("string length 0", 0),
-				Entry("string length 1", 10),
-				Entry("string length 10", 10),
-			)
-		})
 	})
 
+	Describe("Random String", func() {
+		DescribeTable("Random Sample cases", func(sequence string, length int) {
+			s := stringx.RandomSample(sequence, length)
+			assert.Equal(GinkgoT(), length, len(s))
+			for _, c := range s {
+				assert.True(GinkgoT(), strings.ContainsRune(sequence, c))
+			}
+		},
+			Entry("LowercaseLetters string 0", stringx.LowercaseLetters, 0),
+			Entry("LowercaseLetters string 10", stringx.LowercaseLetters, 10),
+
+			Entry("UppercaseLetters string 0", stringx.UppercaseLetters, 0),
+			Entry("UppercaseLetters string 10", stringx.UppercaseLetters, 10),
+
+			Entry("Letters string 0", stringx.Letters, 0),
+			Entry("Letters string 10", stringx.Letters, 10),
+
+			Entry("Digits string 0", stringx.Digits, 0),
+			Entry("Digits string 10", stringx.Digits, 10),
+
+			Entry("Alphanum string 0", stringx.Alphanum, 0),
+			Entry("Alphanum string 10", stringx.Alphanum, 10),
+		)
+	})
+
+	Describe("Random Alphanumeric String", func() {
+		DescribeTable("Random Alphanumeric String cases", func(length int) {
+			s := stringx.RandomAlphanum(length)
+			assert.Equal(GinkgoT(), length, len(s))
+			for _, c := range s {
+				assert.True(GinkgoT(), strings.ContainsRune(stringx.Alphanum, c))
+			}
+		},
+			Entry("string length 0", 0),
+			Entry("string length 1", 10),
+			Entry("string length 10", 10),
+		)
+	})
 })

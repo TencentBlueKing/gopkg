@@ -12,6 +12,7 @@ text := "hello world"
 
 stringx.MD5Hash(text)
 stringx.Truncate(text, 10)
-stringx.Random(10)
+stringx.RandomSample(stringx.LowercaseLetters+stringx.Digits, 10)
+stringx.RandomAlphanum(10)
 ```
 
