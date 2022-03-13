@@ -11,10 +11,14 @@ gopkg 是蓝鲸go公共库
 
 ## 目录
 
+- [conv](./conv/)
 - [errorx](./errorx/)
 - [stringx](./stringx/)
 - collection
     - [set](./collection/set/)
+- cache
+    - [memory](./cache/memory/)
+- [cryptography](./cryptography/)
 
 
 ## Getting started
@@ -24,6 +28,8 @@ gopkg 是蓝鲸go公共库
 ```
 $ go get github.com/TencentBlueKing/gopkg/{pkg_name}
 ```
+
+详细文档 [Go Doc](https://pkg.go.dev/github.com/TencentBlueKing/gopkg) / [Go Walker](https://gowalker.org/github.com/TencentBlueKing/gopkg)
 
 ## Roadmap
 

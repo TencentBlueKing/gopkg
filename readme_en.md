@@ -11,10 +11,14 @@ gopkg is a repo of TencentBlueking for Go. We depend on the this repo in our Go 
 
 ## Index
 
+- [conv](./conv/)
 - [errorx](./errorx/)
 - [stringx](./stringx/)
 - collection
     - [set](./collection/set/)
+- cache
+  - [memory](./cache/memory/)
+- [cryptography](./cryptography/)
 
 ## Getting started
 
@@ -23,6 +27,8 @@ use `go get`
 ```
 $ go get github.com/TencentBlueKing/gopkg/{pkg_name}
 ```
+
+See [Go Doc](https://pkg.go.dev/github.com/TencentBlueKing/gopkg) or [Go Walker](https://gowalker.org/github.com/TencentBlueKing/gopkg) for usage and details.
 
 ## Roadmap
 
