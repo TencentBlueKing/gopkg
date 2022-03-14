@@ -48,6 +48,16 @@ func (s *Int64Set) ToSlice() []int64 {
 	return l
 }
 
+// Range will call the callback function for each key in the set
+// will stop when the callback return false
+func (s *Int64Set) Range(f func(value int64) bool) {
+	for k := range s.Data {
+		if !f(k) {
+			break
+		}
+	}
+}
+
 // NewInt64Set make a int64 set
 func NewInt64Set() *Int64Set {
 	return &Int64Set{
