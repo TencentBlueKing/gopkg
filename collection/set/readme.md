@@ -27,6 +27,11 @@ s.Append([]string{"abc", "def"}...)
 s.Size()
 sli1 := s.ToSlice()
 s1 := s.ToString(",")
+// range
+s.Range(func(value string) bool {
+    // do something to the value
+    return true
+})
 ```
 
 ### Int64 Set
@@ -42,4 +47,9 @@ s.Has(123)
 s.Append([]int64{123, 456}...)
 s.Size()
 sli1 := s.ToSlice()
+// range
+s.Range(func(value int64) bool {
+    // do something to the value
+    return true
+})
 ```

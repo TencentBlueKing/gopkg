@@ -68,6 +68,15 @@ func (s *StringSet) Diff(b *StringSet) *StringSet {
 	return diffSet
 }
 
+// Range will call the callback function for each key in the set
+// will stop when the callback return false
+func (s *StringSet) Range(f func(value string) bool) {
+	for k := range s.Data {
+		if !f(k) {
+			break
+		}
+	}
+}
 
 // NewStringSet make a string set
 func NewStringSet() *StringSet {

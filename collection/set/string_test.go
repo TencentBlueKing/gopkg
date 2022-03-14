@@ -99,7 +99,6 @@ var _ = Describe("String Set", func() {
 			isEqual := s2 == "hello,world" || s2 == "world,hello"
 			// assert.Equal(GinkgoT(), "hello,world", s2)
 			assert.True(GinkgoT(), isEqual)
-
 		})
 
 		It("Diff", func() {
@@ -117,6 +116,34 @@ var _ = Describe("String Set", func() {
 			assert.True(GinkgoT(), s2.Has("hello"))
 		})
 
+		Describe("Range", func() {
+			It("ok", func() {
+				// already has 1 item here
+				s.Add("123")
+				s.Add("456")
+
+				count := 0
+				s.Range(func(value string) bool {
+					count += 1
+					return true
+				})
+
+				assert.Equal(GinkgoT(), 3, count)
+			})
+
+			It("not ok", func() {
+				s.Add("123")
+				s.Add("456")
+
+				count := 0
+				s.Range(func(value string) bool {
+					count += 1
+					return false
+				})
+
+				assert.Equal(GinkgoT(), 1, count)
+			})
+		})
 	})
 
 	Describe("SplitStringToSet", func() {
@@ -131,5 +158,4 @@ var _ = Describe("String Set", func() {
 			assert.True(GinkgoT(), s.Has("b"))
 		})
 	})
-
 })

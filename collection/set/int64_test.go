@@ -82,4 +82,32 @@ var _ = Describe("Int64", func() {
 		sli2 := s.ToSlice()
 		assert.Len(GinkgoT(), sli2, 2)
 	})
+
+	Describe("Range", func() {
+		It("ok", func() {
+			s.Add(123)
+			s.Add(456)
+
+			count := 0
+			s.Range(func(value int64) bool {
+				count += 1
+				return true
+			})
+
+			assert.Equal(GinkgoT(), 2, count)
+		})
+
+		It("not ok", func() {
+			s.Add(123)
+			s.Add(456)
+
+			count := 0
+			s.Range(func(value int64) bool {
+				count += 1
+				return false
+			})
+
+			assert.Equal(GinkgoT(), 1, count)
+		})
+	})
 })
