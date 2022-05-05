@@ -13,6 +13,7 @@ package log
 
 import (
 	"log"
+	"os"
 
 	"logur.dev/logur"
 
@@ -26,5 +27,5 @@ func SetLogger(name string, logger *log.Logger, level logur.Level) {
 
 // EnsureDefaultLogger will replace the default logger by log default logger.
 func EnsureDefaultLogger(level logur.Level) {
-	SetLogger(logging.DefaultLoggerName, log.Default(), level)
+	SetLogger(logging.DefaultLoggerName, log.New(os.Stderr, log.Prefix(), log.Flags()), level)
 }
