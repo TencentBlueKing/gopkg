@@ -58,3 +58,31 @@ logging.SetLogger(
 // 设置默认日志实现，当未匹配到名称和别名时，会尝试使用默认实现
 logging.SetLogger(logging.DefaultLoggerName, myLogger)
 ```
+
+## 预置封装
+为了方便使用，预置了常见日志库的封装，可以快速接入相应的日志实现。
+
+### log
+详见目录：[log](./log/)，方法一览:
+
+| 方法                | 用途                               |
+| ------------------- | ---------------------------------- |
+| SetLogger           | 将 `log.Logger` 注册成日志实现     |
+| EnsureDefaultLogger | 启用默认日志实现（输出到标准错误） |
+
+### logrus
+详见目录：[lugrus](./logrus/)，方法一览：
+
+| 方法                | 用途                                            |
+| ------------------- | ----------------------------------------------- |
+| SetLogger           | 将 `logrus.Logger` 注册成日志实现               |
+| SetLoggerFromEntry  | 将 `logrus.Entry` 注册成日志实现                |
+| EnsureDefaultLogger | 将 `logrus.StandardLogger()` 注册成默认日志实现 |
+
+### zap
+
+详见目录：[zap](./zap/)，方法一览：
+
+| 方法      | 用途                           |
+| --------- | ------------------------------ |
+| SetLogger | 将 `zap.Logger` 注册成日志实现 |
