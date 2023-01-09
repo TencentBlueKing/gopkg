@@ -176,7 +176,6 @@ func (d *Differ) handleMap(old, new map[string]interface{}, nodes []Node) {
 		ret := NewDiffRet(ActionRemove, append(nodes, NewKeyNode(key)), old[key], nil)
 		d.rets = append(d.rets, ret)
 	}
-	return
 }
 
 func (d *Differ) handleList(old, new []interface{}, nodes []Node) {
