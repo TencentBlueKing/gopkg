@@ -18,6 +18,7 @@
 package mapx
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -117,8 +118,12 @@ func TestGetItemsSuccessCase(t *testing.T) {
 
 // paths 为 []string 或 其他，失败的情况
 func TestGetItemsFailCase(t *testing.T) {
+	// invalid paths type error
+	_, err := GetItems(deploySpec, 0)
+	assert.True(t, errors.Is(err, ErrInvalidPathType))
+
 	// not paths error
-	_, err := GetItems(deploySpec, []string{})
+	_, err = GetItems(deploySpec, []string{})
 	assert.NotNil(t, err)
 
 	// not map[string]interface{} type error

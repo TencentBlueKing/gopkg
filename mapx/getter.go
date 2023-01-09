@@ -23,17 +23,19 @@ import (
 	"strings"
 )
 
+var ErrInvalidPathType = errors.New("paths's type must one of (string, []string)")
+
 // GetItems 获取嵌套定义的 Map 值
 // paths 参数支持 []string 类型，如 []string{"metadata", "namespace"}
 // 或 string 类型（以 '.' 为分隔符），如 "spec.template.spec.containers"
 func GetItems(obj map[string]interface{}, paths interface{}) (interface{}, error) {
-	switch t := paths.(type) {
+	switch p := paths.(type) {
 	case string:
-		return getItems(obj, strings.Split(paths.(string), "."))
+		return getItems(obj, strings.Split(p, "."))
 	case []string:
-		return getItems(obj, paths.([]string))
+		return getItems(obj, p)
 	default:
-		return nil, fmt.Errorf("paths's type must one of (string, []string), get %v", t)
+		return nil, ErrInvalidPathType
 	}
 }
 

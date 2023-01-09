@@ -27,17 +27,17 @@ import (
 // 或 string 类型（以 '.' 为分隔符），如 "spec.template.spec.containers"
 func SetItems(obj map[string]interface{}, paths interface{}, val interface{}) error {
 	// 检查 paths 类型
-	switch t := paths.(type) {
+	switch p := paths.(type) {
 	case string:
-		if err := setItems(obj, strings.Split(paths.(string), "."), val); err != nil {
+		if err := setItems(obj, strings.Split(p, "."), val); err != nil {
 			return err
 		}
 	case []string:
-		if err := setItems(obj, paths.([]string), val); err != nil {
+		if err := setItems(obj, p, val); err != nil {
 			return err
 		}
 	default:
-		return fmt.Errorf("paths's type must one of (string, []string), get %v", t)
+		return ErrInvalidPathType
 	}
 	return nil
 }
