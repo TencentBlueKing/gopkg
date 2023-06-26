@@ -18,6 +18,7 @@ cache the data in memory, auto to fetch the data if missing.
 package main
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -49,7 +50,8 @@ func main() {
 	// 4. use it
 	k := memory.NewStringKey("hello")
 
-	data, err := c.Get(k)
+    var ctx = context.Background()
+	data, err := c.Get(ctx, k)
 	fmt.Println("err == nil: ", err == nil)
 	fmt.Println("data from cache: ", data)
 }
@@ -62,6 +64,7 @@ func main() {
 package main
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -80,7 +83,7 @@ func (k ExampleKey) Key() string {
 }
 
 // 2. impl the reterive func
-func RetrieveExample(inKey cache.Key) (interface{}, error) {
+func RetrieveExample(ctx context.Context, inKey cache.Key) (interface{}, error) {
 	k := inKey.(ExampleKey)
 	fmt.Println("ExampleKey Field1 and Field2 value:", k.Field1, k.Field2)
 	// data, err := GetFromDatabase(k.Field1, k.Field2)
@@ -105,11 +108,12 @@ func main() {
 		Field2: 42,
 	}
 
-	data, err := c.Get(k)
+    var ctx = context.Background()
+	data, err := c.Get(ctx, k)
 	fmt.Println("err == nil: ", err == nil)
 	fmt.Println("data from cache: ", data)
 
-	dataStr, err := c.GetString(k)
+	dataStr, err := c.GetString(ctx, k)
 	fmt.Println("err == nil: ", err == nil)
 	fmt.Printf("data type is %T, value is %s\n", dataStr, dataStr)
 }
