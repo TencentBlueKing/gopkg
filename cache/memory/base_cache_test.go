@@ -12,6 +12,7 @@
 package memory
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -22,7 +23,7 @@ import (
 	"github.com/TencentBlueKing/gopkg/cache/memory/backend"
 )
 
-func retrieveTest(k cache.Key) (interface{}, error) {
+func retrieveTest(ctx context.Context, k cache.Key) (interface{}, error) {
 	kStr := k.Key()
 	switch kStr {
 	case "a":
@@ -64,18 +65,20 @@ func retrieveTest(k cache.Key) (interface{}, error) {
 	}
 }
 
-func retrieveError(k cache.Key) (interface{}, error) {
+func retrieveError(ctx context.Context, k cache.Key) (interface{}, error) {
 	return nil, errors.New("test error")
 }
 
 var _ = Describe("BaseCache", func() {
 	var c Cache
 	var be *backend.MemoryBackend
+	var ctx context.Context
 	BeforeEach(func() {
 		expiration := 5 * time.Minute
 		be = backend.NewMemoryBackend("test", expiration, nil)
 
 		c = NewBaseCache(false, retrieveTest, be)
+		ctx = context.Background()
 	})
 
 	It("Disabled", func() {
@@ -84,19 +87,19 @@ var _ = Describe("BaseCache", func() {
 
 	It("Get", func() {
 		aKey := cache.NewStringKey("a")
-		x, err := c.Get(aKey)
+		x, err := c.Get(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x.(string))
 
-		x, err = c.Get(aKey)
+		x, err = c.Get(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x.(string))
 	})
 
 	It("Set", func() {
 		setKey := cache.NewStringKey("s")
-		c.Set(setKey, "1")
-		x, err := c.GetString(setKey)
+		c.Set(ctx, setKey, "1")
+		x, err := c.GetString(ctx, setKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x)
 	})
@@ -105,11 +108,11 @@ var _ = Describe("BaseCache", func() {
 		c = NewBaseCache(true, retrieveTest, be)
 
 		aKey := cache.NewStringKey("a")
-		x, err := c.Get(aKey)
+		x, err := c.Get(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x.(string))
 
-		x, err = c.Get(aKey)
+		x, err = c.Get(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x.(string))
 	})
@@ -117,256 +120,256 @@ var _ = Describe("BaseCache", func() {
 	It("Exists", func() {
 		aKey := cache.NewStringKey("a")
 		// missing before first Get->Retrieve
-		assert.False(GinkgoT(), c.Exists(aKey))
+		assert.False(GinkgoT(), c.Exists(ctx, aKey))
 
-		_, _ = c.Get(aKey)
-		assert.True(GinkgoT(), c.Exists(aKey))
+		_, _ = c.Get(ctx, aKey)
+		assert.True(GinkgoT(), c.Exists(ctx, aKey))
 	})
 
 	It("DirectGet", func() {
 		aKey := cache.NewStringKey("a")
-		_, ok := c.DirectGet(aKey)
+		_, ok := c.DirectGet(ctx, aKey)
 		assert.False(GinkgoT(), ok)
 
-		_, _ = c.Get(aKey)
-		_, ok = c.DirectGet(aKey)
+		_, _ = c.Get(ctx, aKey)
+		_, ok = c.DirectGet(ctx, aKey)
 		assert.True(GinkgoT(), ok)
 	})
 
 	It("Delete", func() {
 		aKey := cache.NewStringKey("a")
-		_, _ = c.Get(aKey)
-		assert.True(GinkgoT(), c.Exists(aKey))
+		_, _ = c.Get(ctx, aKey)
+		assert.True(GinkgoT(), c.Exists(ctx, aKey))
 
-		_ = c.Delete(aKey)
-		assert.False(GinkgoT(), c.Exists(aKey))
+		_ = c.Delete(ctx, aKey)
+		assert.False(GinkgoT(), c.Exists(ctx, aKey))
 	})
 
 	It("GetString", func() {
 		aKey := cache.NewStringKey("a")
-		x, err := c.GetString(aKey)
+		x, err := c.GetString(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), "1", x)
 
 		int64Key := cache.NewStringKey("int64")
-		_, err = c.GetString(int64Key)
+		_, err = c.GetString(ctx, int64Key)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetString(errorKey)
+		_, err = c.GetString(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetBool", func() {
 		aKey := cache.NewStringKey("bool")
-		x, err := c.GetBool(aKey)
+		x, err := c.GetBool(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), true, x)
 
 		int64Key := cache.NewStringKey("int64")
-		_, err = c.GetBool(int64Key)
+		_, err = c.GetBool(ctx, int64Key)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetBool(errorKey)
+		_, err = c.GetBool(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetInt", func() {
 		aKey := cache.NewStringKey("int")
-		x, err := c.GetInt(aKey)
+		x, err := c.GetInt(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), int(1), x)
 
 		boolKey := cache.NewStringKey("bool")
-		_, err = c.GetInt(boolKey)
+		_, err = c.GetInt(ctx, boolKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetInt(errorKey)
+		_, err = c.GetInt(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetInt8", func() {
 		aKey := cache.NewStringKey("int8")
-		x, err := c.GetInt8(aKey)
+		x, err := c.GetInt8(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), int8(1), x)
 
 		boolKey := cache.NewStringKey("bool")
-		_, err = c.GetInt8(boolKey)
+		_, err = c.GetInt8(ctx, boolKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetInt8(errorKey)
+		_, err = c.GetInt8(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetInt16", func() {
 		aKey := cache.NewStringKey("int16")
-		x, err := c.GetInt16(aKey)
+		x, err := c.GetInt16(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), int16(1), x)
 
 		boolKey := cache.NewStringKey("bool")
-		_, err = c.GetInt16(boolKey)
+		_, err = c.GetInt16(ctx, boolKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetInt16(errorKey)
+		_, err = c.GetInt16(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetInt32", func() {
 		aKey := cache.NewStringKey("int32")
-		x, err := c.GetInt32(aKey)
+		x, err := c.GetInt32(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), int32(1), x)
 
 		boolKey := cache.NewStringKey("bool")
-		_, err = c.GetInt32(boolKey)
+		_, err = c.GetInt32(ctx, boolKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetInt32(errorKey)
+		_, err = c.GetInt32(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetInt64", func() {
 		aKey := cache.NewStringKey("int64")
-		x, err := c.GetInt64(aKey)
+		x, err := c.GetInt64(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), int64(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetInt64(strKey)
+		_, err = c.GetInt64(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetInt64(errorKey)
+		_, err = c.GetInt64(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetUint", func() {
 		aKey := cache.NewStringKey("uint")
-		x, err := c.GetUint(aKey)
+		x, err := c.GetUint(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), uint(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetUint(strKey)
+		_, err = c.GetUint(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetUint(errorKey)
+		_, err = c.GetUint(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetUint8", func() {
 		aKey := cache.NewStringKey("uint8")
-		x, err := c.GetUint8(aKey)
+		x, err := c.GetUint8(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), uint8(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetUint8(strKey)
+		_, err = c.GetUint8(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetUint8(errorKey)
+		_, err = c.GetUint8(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetUint16", func() {
 		aKey := cache.NewStringKey("uint16")
-		x, err := c.GetUint16(aKey)
+		x, err := c.GetUint16(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), uint16(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetUint16(strKey)
+		_, err = c.GetUint16(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetUint16(errorKey)
+		_, err = c.GetUint16(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetUint32", func() {
 		aKey := cache.NewStringKey("uint32")
-		x, err := c.GetUint32(aKey)
+		x, err := c.GetUint32(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), uint32(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetUint32(strKey)
+		_, err = c.GetUint32(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetUint32(errorKey)
+		_, err = c.GetUint32(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetUint64", func() {
 		aKey := cache.NewStringKey("uint64")
-		x, err := c.GetUint64(aKey)
+		x, err := c.GetUint64(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), uint64(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetUint64(strKey)
+		_, err = c.GetUint64(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetUint64(errorKey)
+		_, err = c.GetUint64(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetFloat32", func() {
 		aKey := cache.NewStringKey("float32")
-		x, err := c.GetFloat32(aKey)
+		x, err := c.GetFloat32(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), float32(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetFloat32(strKey)
+		_, err = c.GetFloat32(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetFloat32(errorKey)
+		_, err = c.GetFloat32(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 	It("GetFloat64", func() {
 		aKey := cache.NewStringKey("float64")
-		x, err := c.GetFloat64(aKey)
+		x, err := c.GetFloat64(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), float64(1), x)
 
 		strKey := cache.NewStringKey("a")
-		_, err = c.GetFloat64(strKey)
+		_, err = c.GetFloat64(ctx, strKey)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetFloat64(errorKey)
+		_, err = c.GetFloat64(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetTime", func() {
 		aKey := cache.NewStringKey("time")
-		x, err := c.GetTime(aKey)
+		x, err := c.GetTime(ctx, aKey)
 		assert.NoError(GinkgoT(), err)
 		assert.Equal(GinkgoT(), time.Time{}, x)
 
 		int64Key := cache.NewStringKey("int64")
-		_, err = c.GetTime(int64Key)
+		_, err = c.GetTime(ctx, int64Key)
 		assert.Error(GinkgoT(), err)
 
 		errorKey := cache.NewStringKey("error")
-		_, err = c.GetTime(errorKey)
+		_, err = c.GetTime(ctx, errorKey)
 		assert.Error(GinkgoT(), err)
 	})
 
 	It("GetError", func() {
 		aKey := cache.NewStringKey("error")
-		x, err := c.Get(aKey)
+		x, err := c.Get(ctx, aKey)
 		assert.Error(GinkgoT(), err)
 		assert.Nil(GinkgoT(), x)
 
-		x, err2 := c.Get(aKey)
+		x, err2 := c.Get(ctx, aKey)
 		assert.Error(GinkgoT(), err2)
 		assert.Nil(GinkgoT(), x)
 
@@ -378,10 +381,9 @@ var _ = Describe("BaseCache", func() {
 		c = NewBaseCache(true, retrieveError, be)
 		assert.NotNil(GinkgoT(), c)
 		aKey := cache.NewStringKey("a")
-		_, err := c.Get(aKey)
+		_, err := c.Get(ctx, aKey)
 		assert.Error(GinkgoT(), err)
 	})
-
 })
 
 // TODO: mock the backend first Get fail, second Get ok

@@ -21,4 +21,4 @@
 .idea
 .envrc
 .coverage.cov
-
+.vscode

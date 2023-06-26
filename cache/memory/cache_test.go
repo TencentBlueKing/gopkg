@@ -12,6 +12,7 @@
 package memory
 
 import (
+	"context"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -20,7 +21,7 @@ import (
 	"github.com/TencentBlueKing/gopkg/cache"
 )
 
-func retrieveOK(k cache.Key) (interface{}, error) {
+func retrieveOK(ctx context.Context, k cache.Key) (interface{}, error) {
 	return "ok", nil
 }
 
@@ -36,5 +37,4 @@ var _ = Describe("Cache", func() {
 		c := NewMockCache(retrieveOK)
 		assert.NotNil(GinkgoT(), c)
 	})
-
 })
