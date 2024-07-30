@@ -23,11 +23,11 @@ import (
 )
 
 func retrieveOK(ctx context.Context, k cache.Key) (interface{}, error) {
-	return "ok", nil
+	return "", nil
 }
 
 func retrieveErr(ctx context.Context, k cache.Key) (interface{}, error) {
-	return "ok", errors.ErrUnsupported
+	return nil, errors.ErrUnsupported
 }
 
 var _ = Describe("Cache", func() {
