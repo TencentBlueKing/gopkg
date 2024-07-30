@@ -22,12 +22,14 @@ import (
 	"github.com/TencentBlueKing/gopkg/cache"
 )
 
+var cacheError = errors.New("cache error")
+
 func retrieveOK(ctx context.Context, k cache.Key) (interface{}, error) {
 	return "", nil
 }
 
 func retrieveErr(ctx context.Context, k cache.Key) (interface{}, error) {
-	return nil, errors.ErrUnsupported
+	return nil, cacheError
 }
 
 var _ = Describe("Cache", func() {
@@ -57,7 +59,7 @@ var _ = Describe("Cache", func() {
 		expiration := 5 * time.Minute
 		c := NewCache("test", retrieveErr, expiration, nil, WithEmptyCache(0))
 		_, err := c.Get(ctx, aKey)
-		assert.ErrorIs(GinkgoT(), err, errors.ErrUnsupported)
+		assert.ErrorIs(GinkgoT(), err, cacheError)
 
 	})
 
