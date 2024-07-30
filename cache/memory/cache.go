@@ -23,8 +23,8 @@ import (
 // - expiration: the expiration time.
 // - randomExtraExpirationFunc: the function to generate a random duration, used to add extra expiration for each key.
 // - options: the options for the cache . eg:
-//            WithNoCache(disable cache)
-//            WithEmptyCache(set the key EmptyCache if retrieve fail from retrieveFunc)
+//            WithNoCache:disable cache
+//            WithEmptyCache(duration): set the key EmptyCache if retrieve fail from retrieveFunc
 func NewCache(
 	name string,
 	retrieveFunc RetrieveFunc,

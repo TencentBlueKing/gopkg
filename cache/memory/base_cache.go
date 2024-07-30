@@ -114,9 +114,11 @@ func (c *BaseCache) doRetrieve(ctx context.Context, k cache.Key) (interface{}, e
 		return c.retrieveFunc(ctx, k)
 	})
 
-	if err != nil && c.withEmptyCache {
-		// ! if error, cache it too, make it short enough(5s)
-		c.backend.Set(key, EmptyCache{err: err}, c.emptyCacheExpireDuration)
+	if err != nil {
+		if c.withEmptyCache {
+			// ! if error, cache it too, make it short enough(5s)
+			c.backend.Set(key, EmptyCache{err: err}, c.emptyCacheExpireDuration)
+		}
 		return nil, err
 	}
 

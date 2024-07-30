@@ -13,6 +13,7 @@ package memory
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -25,7 +26,14 @@ func retrieveOK(ctx context.Context, k cache.Key) (interface{}, error) {
 	return "ok", nil
 }
 
+func retrieveErr(ctx context.Context, k cache.Key) (interface{}, error) {
+	return "ok", errors.ErrUnsupported
+}
+
 var _ = Describe("Cache", func() {
+
+	var ctx context.Context
+
 	It("New", func() {
 		expiration := 5 * time.Minute
 
@@ -37,4 +45,20 @@ var _ = Describe("Cache", func() {
 		c := NewMockCache(retrieveOK)
 		assert.NotNil(GinkgoT(), c)
 	})
+
+	It("Cache Disable", func() {
+		expiration := 5 * time.Minute
+		c := NewCache("test", retrieveOK, expiration, nil, WithNoCache())
+		assert.True(GinkgoT(), c.Disabled())
+	})
+
+	It("Cache WithEmptyCache", func() {
+		aKey := cache.NewStringKey("test")
+		expiration := 5 * time.Minute
+		c := NewCache("test", retrieveErr, expiration, nil, WithEmptyCache(0))
+		_, err := c.Get(ctx, aKey)
+		assert.ErrorIs(GinkgoT(), err, errors.ErrUnsupported)
+
+	})
+
 })
