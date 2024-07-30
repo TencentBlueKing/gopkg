@@ -19,24 +19,26 @@ import (
 
 // NewCache creates a new cache object.
 // - name: the cache name.
-// - disabled: whether the cache is disabled.
 // - retrieveFunc: the function to retrieve the real data.
 // - expiration: the expiration time.
 // - randomExtraExpirationFunc: the function to generate a random duration, used to add extra expiration for each key.
+// - options: the options for the cache . eg:
+//            WithNoCache:disable cache
+//            WithEmptyCache(duration): set the key EmptyCache if retrieve fail from retrieveFunc
 func NewCache(
 	name string,
-	disabled bool,
 	retrieveFunc RetrieveFunc,
 	expiration time.Duration,
 	randomExtraExpirationFunc backend.RandomExtraExpirationDurationFunc,
+	options ...Option,
 ) Cache {
 	be := backend.NewMemoryBackend(name, expiration, randomExtraExpirationFunc)
-	return NewBaseCache(disabled, retrieveFunc, be)
+	return NewBaseCache(retrieveFunc, be, options...)
 }
 
 // NewMockCache create a memory cache for mock
 func NewMockCache(retrieveFunc RetrieveFunc) Cache {
 	be := backend.NewMemoryBackend("mockCache", 5*time.Minute, nil)
 
-	return NewBaseCache(false, retrieveFunc, be)
+	return NewBaseCache(retrieveFunc, be)
 }

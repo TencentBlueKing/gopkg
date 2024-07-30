@@ -13,6 +13,7 @@ package memory
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -21,15 +22,24 @@ import (
 	"github.com/TencentBlueKing/gopkg/cache"
 )
 
+var cacheError = errors.New("cache error")
+
 func retrieveOK(ctx context.Context, k cache.Key) (interface{}, error) {
-	return "ok", nil
+	return "", nil
+}
+
+func retrieveErr(ctx context.Context, k cache.Key) (interface{}, error) {
+	return nil, cacheError
 }
 
 var _ = Describe("Cache", func() {
+
+	var ctx context.Context
+
 	It("New", func() {
 		expiration := 5 * time.Minute
 
-		c := NewCache("test", false, retrieveOK, expiration, nil)
+		c := NewCache("test", retrieveOK, expiration, nil)
 		assert.NotNil(GinkgoT(), c)
 	})
 
@@ -37,4 +47,20 @@ var _ = Describe("Cache", func() {
 		c := NewMockCache(retrieveOK)
 		assert.NotNil(GinkgoT(), c)
 	})
+
+	It("Cache Disable", func() {
+		expiration := 5 * time.Minute
+		c := NewCache("test", retrieveOK, expiration, nil, WithNoCache())
+		assert.True(GinkgoT(), c.Disabled())
+	})
+
+	It("Cache WithEmptyCache", func() {
+		aKey := cache.NewStringKey("test")
+		expiration := 5 * time.Minute
+		c := NewCache("test", retrieveErr, expiration, nil, WithEmptyCache(0))
+		_, err := c.Get(ctx, aKey)
+		assert.ErrorIs(GinkgoT(), err, cacheError)
+
+	})
+
 })

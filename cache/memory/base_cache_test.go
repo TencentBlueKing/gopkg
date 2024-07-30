@@ -77,7 +77,7 @@ var _ = Describe("BaseCache", func() {
 		expiration := 5 * time.Minute
 		be = backend.NewMemoryBackend("test", expiration, nil)
 
-		c = NewBaseCache(false, retrieveTest, be)
+		c = NewBaseCache(retrieveTest, be, WithEmptyCache(0))
 		ctx = context.Background()
 	})
 
@@ -105,7 +105,7 @@ var _ = Describe("BaseCache", func() {
 	})
 
 	It("Disabled then get", func() {
-		c = NewBaseCache(true, retrieveTest, be)
+		c = NewBaseCache(retrieveTest, be, WithNoCache())
 
 		aKey := cache.NewStringKey("a")
 		x, err := c.Get(ctx, aKey)
@@ -378,7 +378,7 @@ var _ = Describe("BaseCache", func() {
 	})
 
 	It("retrieveError", func() {
-		c = NewBaseCache(true, retrieveError, be)
+		c = NewBaseCache(retrieveError, be, WithNoCache())
 		assert.NotNil(GinkgoT(), c)
 		aKey := cache.NewStringKey("a")
 		_, err := c.Get(ctx, aKey)
