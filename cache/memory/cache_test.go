@@ -29,7 +29,7 @@ var _ = Describe("Cache", func() {
 	It("New", func() {
 		expiration := 5 * time.Minute
 
-		c := NewCache("test", false, retrieveOK, expiration, nil)
+		c := NewCache("test", retrieveOK, expiration, nil)
 		assert.NotNil(GinkgoT(), c)
 	})
 

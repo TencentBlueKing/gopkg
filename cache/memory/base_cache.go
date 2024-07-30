@@ -24,22 +24,46 @@ import (
 
 const EmptyCacheExpiration = 5 * time.Second
 
-// NewBaseCache creates a new baseCache instance which implements Cache interface.
-func NewBaseCache(disabled bool, retrieveFunc RetrieveFunc, backend backend.Backend) Cache {
-	return &BaseCache{
-		backend:      backend,
-		disabled:     disabled,
-		retrieveFunc: retrieveFunc,
-	}
-}
-
 // BaseCache is a cache which retrieves data from the backend and stores it in the cache.
 type BaseCache struct {
 	backend backend.Backend
 
-	disabled     bool
-	retrieveFunc RetrieveFunc
-	g            singleflight.Group
+	disabled                 bool
+	retrieveFunc             RetrieveFunc
+	g                        singleflight.Group
+	withEmptyCache           bool
+	emptyCacheExpireDuration time.Duration
+}
+
+type Option func(*BaseCache)
+
+func WithNoCache() Option {
+	return func(cache *BaseCache) {
+		cache.disabled = true
+	}
+}
+
+// WithEmptyCache will set the key EmptyCache  if retrieve fail from retrieveFunc
+func WithEmptyCache(timeout time.Duration) Option {
+	return func(cache *BaseCache) {
+		if timeout == 0 {
+			timeout = EmptyCacheExpiration
+		}
+		cache.withEmptyCache = true
+		cache.emptyCacheExpireDuration = timeout
+	}
+}
+
+// NewBaseCache creates a new baseCache instance which implements Cache interface.
+func NewBaseCache(retrieveFunc RetrieveFunc, backend backend.Backend, options ...Option) Cache {
+	c := &BaseCache{
+		backend:      backend,
+		retrieveFunc: retrieveFunc,
+	}
+	for _, o := range options {
+		o(c)
+	}
+	return c
 }
 
 // EmptyCache is a placeholder for the missing key
@@ -90,9 +114,9 @@ func (c *BaseCache) doRetrieve(ctx context.Context, k cache.Key) (interface{}, e
 		return c.retrieveFunc(ctx, k)
 	})
 
-	if err != nil {
+	if err != nil && c.withEmptyCache {
 		// ! if error, cache it too, make it short enough(5s)
-		c.backend.Set(key, EmptyCache{err: err}, EmptyCacheExpiration)
+		c.backend.Set(key, EmptyCache{err: err}, c.emptyCacheExpireDuration)
 		return nil, err
 	}
 
